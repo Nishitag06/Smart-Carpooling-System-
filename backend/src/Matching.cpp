@@ -1,6 +1,7 @@
 #include "Matching.h"
 #include <algorithm>
 #include <limits>
+#include <utility>
 
 using namespace std;
 
@@ -34,6 +35,9 @@ optional<Match> MatchingEngine::evaluate(const Driver& driver,
             int total = 0;
             double totalDistanceKm = 0.0;
             int pickupArrival = 0;
+            int pickupRouteIndex = -1;
+            int passengerDestinationRouteIndex = -1;
+            vector<string> sharedRoute;
             bool valid = true;
 
             for (size_t i = 1; i < stops.size(); ++i) {
@@ -44,7 +48,16 @@ optional<Match> MatchingEngine::evaluate(const Driver& driver,
                 }
                 total += leg.estimatedTravelMinutes;
                 totalDistanceKm += leg.distanceKm;
-                if (i == pickupIndex) pickupArrival = driver.departureMinutes + total;
+                for (const string& location : leg.path) {
+                    if (sharedRoute.empty() || sharedRoute.back() != location)
+                        sharedRoute.push_back(location);
+                }
+                if (i == pickupIndex) {
+                    pickupArrival = driver.departureMinutes + total;
+                    pickupRouteIndex = static_cast<int>(sharedRoute.size()) - 1;
+                }
+                if (i == dropIndex)
+                    passengerDestinationRouteIndex = static_cast<int>(sharedRoute.size()) - 1;
             }
             if (!valid) continue;
 
@@ -62,15 +75,25 @@ optional<Match> MatchingEngine::evaluate(const Driver& driver,
                 bestWait = wait;
                 best.driverId = driver.id;
                 best.passengerId = passenger.id;
-                best.route = stops;
+                best.route = move(sharedRoute);
+                best.originalRoute = base.path;
+                best.pickupRouteIndex = pickupRouteIndex;
+                best.passengerDestinationRouteIndex = passengerDestinationRouteIndex;
                 best.baseRouteDistanceKm = base.distanceKm;
                 best.sharedRouteDistanceKm = totalDistanceKm;
+                best.detourDistanceKm = max(0.0, totalDistanceKm - base.distanceKm);
                 best.baseRouteMinutes = base.estimatedTravelMinutes;
                 best.sharedRouteMinutes = total;
                 best.detourMinutes = detour;
                 best.pickupArrivalMinutes = pickupArrival;
                 best.passengerWaitMinutes = wait;
+                best.driverWaitMinutes = wait;
+                best.passengerWaitByArrivalMinutes =
+                    max(0, pickupArrival - passenger.preferredPickupMinutes);
+                best.passengerEarliestPickupMinutes = earliest;
                 best.passengerLatestPickupMinutes = latest;
+                best.pickupArrivalWithinWindow =
+                    pickupArrival >= earliest && pickupArrival <= latest;
             }
         }
     }

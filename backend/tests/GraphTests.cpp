@@ -101,11 +101,52 @@ int main() {
         return match.driverId == driver->id;
     });
     if (compatible == matches.end() || compatible->route.empty() ||
+        compatible->originalRoute.empty() ||
         compatible->route.front() != driver->origin ||
         compatible->route.back() != driver->destination ||
+        compatible->originalRoute.front() != driver->origin ||
+        compatible->originalRoute.back() != driver->destination ||
+        compatible->pickupRouteIndex < 0 ||
+        compatible->pickupRouteIndex >= static_cast<int>(compatible->route.size()) ||
+        compatible->passengerDestinationRouteIndex < compatible->pickupRouteIndex ||
+        compatible->passengerDestinationRouteIndex >= static_cast<int>(compatible->route.size()) ||
+        compatible->route[compatible->pickupRouteIndex] != passenger->pickup ||
+        compatible->route[compatible->passengerDestinationRouteIndex] != passenger->dropoff ||
         find(compatible->route.begin(), compatible->route.end(), passenger->pickup) == compatible->route.end() ||
-        find(compatible->route.begin(), compatible->route.end(), passenger->dropoff) == compatible->route.end()) {
+        find(compatible->route.begin(), compatible->route.end(), passenger->dropoff) == compatible->route.end() ||
+        count(compatible->route.begin(), compatible->route.end(), driver->destination) != 1 ||
+        adjacent_find(compatible->route.begin(), compatible->route.end()) != compatible->route.end()) {
         std::cerr << "Navya should match Nishita when the existing route constraints permit it.\n";
+        return 1;
+    }
+
+    const vector<Road> serviceRoads = service.roads();
+    for (size_t i = 1; i < compatible->route.size(); ++i) {
+        const bool isRoadEdge = any_of(serviceRoads.begin(), serviceRoads.end(), [&](const Road& road) {
+            return road.from == compatible->route[i - 1] && road.to == compatible->route[i];
+        });
+        if (!isRoadEdge) {
+            std::cerr << "Shared route contains a step that is not a sourced road edge.\n";
+            return 1;
+        }
+    }
+
+    const int earliestPickup = passenger->preferredPickupMinutes - passenger->earlyToleranceMinutes;
+    const int expectedDriverWait = max(0, earliestPickup - compatible->pickupArrivalMinutes);
+    const int expectedPassengerWait = max(0,
+        compatible->pickupArrivalMinutes - passenger->preferredPickupMinutes);
+    if (compatible->passengerEarliestPickupMinutes != earliestPickup ||
+        compatible->passengerLatestPickupMinutes !=
+            passenger->preferredPickupMinutes + passenger->lateToleranceMinutes ||
+        compatible->pickupArrivalWithinWindow !=
+            (compatible->pickupArrivalMinutes >= earliestPickup &&
+             compatible->pickupArrivalMinutes <= compatible->passengerLatestPickupMinutes) ||
+        compatible->driverWaitMinutes != expectedDriverWait ||
+        compatible->passengerWaitMinutes != expectedDriverWait ||
+        compatible->passengerWaitByArrivalMinutes != expectedPassengerWait ||
+        std::abs(compatible->detourDistanceKm -
+            max(0.0, compatible->sharedRouteDistanceKm - compatible->baseRouteDistanceKm)) >= 1e-9) {
+        std::cerr << "Match time-window, wait, or detour estimates are inconsistent.\n";
         return 1;
     }
     return 0;

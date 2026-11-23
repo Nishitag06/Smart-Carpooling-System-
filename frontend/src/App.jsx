@@ -185,19 +185,53 @@ export default function App() {
       </div>
 
       {matches.length > 0 && <div className="results">
-        <div className="results-title"><h3>{matches.length} compatible match{matches.length > 1 ? "es" : ""}</h3><small>Ranked by lowest detour, then lowest passenger wait</small></div>
+        <div className="results-title"><h3>{matches.length} compatible match{matches.length > 1 ? "es" : ""}</h3><small>Ranked by lowest additional time, then lowest driver wait</small></div>
         {matches.map((m, index) => {
           const driver = drivers.find(d => d.id === m.driverId);
           const passenger = passengers.find(p => p.id === m.passengerId);
+          const route = asArray(m.route);
+          const originalRoute = asArray(m.originalRoute);
           return <article className="match-card" key={`${m.driverId}-${m.passengerId}`}>
-            <div className="match-top"><span className="match-index">MATCH 0{index + 1}</span><strong>{driver?.name || `Driver #${m.driverId}`} <span className="muted">↔</span> {passenger?.name || `Passenger #${m.passengerId}`}</strong><span className="detour">{m.detourMinutes} min detour</span></div>
-            <div className="route-caption">Proposed shared path</div>
-            <div className="route-line">{m.route.map((stop, i) => <React.Fragment key={`${stop}-${i}`}><span className="stop">{stop}</span>{i < m.route.length - 1 && <span className="route-arrow">→</span>}</React.Fragment>)}</div>
+            <div className="match-top"><span className="match-index">MATCH 0{index + 1}</span><strong>{driver?.name || `Driver #${m.driverId}`} <span className="muted">↔</span> {passenger?.name || `Passenger #${m.passengerId}`}</strong><span className="detour">+{m.detourDistanceKm.toFixed(2)} km detour</span></div>
+            <div className="route-caption">Driver's original route</div>
+            <div className="route-line original-route">{originalRoute.map((stop, i) =>
+              <React.Fragment key={`original-${stop}-${i}`}>
+                <span className="stop">{stop}</span>
+                {i < originalRoute.length - 1 && <span className="route-arrow original-step">→</span>}
+              </React.Fragment>
+            )}</div>
+            <div className="route-caption">Shared journey · estimated road path</div>
+            <div className="route-legend">
+              <span><i className="legend-original" />Original route</span>
+              <span><i className="legend-detour" />Detour to meeting point</span>
+              <span><i className="legend-shared" />Shared journey</span>
+            </div>
+            <div className="route-line journey-route">{route.map((stop, i) => {
+              const roles = [];
+              if (i === 0) roles.push("Driver starts");
+              if (i === m.pickupRouteIndex) roles.push("Meeting point");
+              if (i === m.passengerDestinationRouteIndex) roles.push("Passenger destination");
+              if (i === route.length - 1) roles.push("Driver's destination");
+              const stopClass = [
+                "stop",
+                i === m.pickupRouteIndex ? "meeting-point" : "",
+                i === m.passengerDestinationRouteIndex ? "passenger-destination" : "",
+                i === route.length - 1 ? "driver-destination" : ""
+              ].filter(Boolean).join(" ");
+              return <React.Fragment key={`${stop}-${i}`}>
+                <span className={stopClass}>{roles.length > 0 && <small>{roles.join(" · ")}</small>}{stop}</span>
+                {i < route.length - 1 && <span className={`route-arrow ${i < m.pickupRouteIndex ? "detour-step" : "shared-step"}`}>→</span>}
+              </React.Fragment>;
+            })}</div>
             <div className="metrics">
-              <div><small>Pickup arrival</small><b>{m.pickupArrivalTime}</b></div>
-              <div><small>Passenger wait</small><b>{m.passengerWaitMinutes} min</b></div>
-              <div><small>Estimated base time</small><b>{m.baseRouteMinutes} min</b></div>
-              <div><small>Estimated shared time</small><b>{m.sharedRouteMinutes} min</b></div>
+              <div><small>Estimated meeting-point arrival</small><b>{m.pickupArrivalTime}</b></div>
+              <div><small>Passenger pickup window</small><b>{m.passengerEarliestPickupTime}–{m.passengerLatestPickupTime}</b><em className={m.pickupArrivalWithinWindow ? "time-in-window" : "time-before-window"}>{m.pickupArrivalWithinWindow ? "Arrival is within window" : "Early; driver waits before pickup"}</em></div>
+              <div><small>Driver wait before window</small><b>{m.driverWaitMinutes} min</b></div>
+              <div><small>Passenger wait by arrival</small><b>{m.passengerWaitByArrivalMinutes} min</b><em>After requested {passenger?.preferredPickupTime || "pickup time"}</em></div>
+              <div><small>Original route distance</small><b>{m.baseRouteDistanceKm.toFixed(2)} km</b></div>
+              <div><small>Additional detour distance</small><b>{m.detourDistanceKm.toFixed(2)} km</b></div>
+              <div><small>Estimated additional time</small><b>{m.detourMinutes} min</b></div>
+              <div><small>Total estimated shared time</small><b>{m.sharedRouteMinutes} min</b></div>
             </div>
             <button className="book-button" onClick={() => book(m)}>Confirm this booking</button>
           </article>;

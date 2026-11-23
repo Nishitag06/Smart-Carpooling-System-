@@ -38,3 +38,5 @@ Desktop.ini
 
 # Third-party dependencies
 third_party/
+
+build-ucrt-match/

@@ -28,12 +28,21 @@ static wvalue matchJson(const Match& m) {
     x["baseRouteMinutes"] = m.baseRouteMinutes; x["sharedRouteMinutes"] = m.sharedRouteMinutes;
     x["baseRouteDistanceKm"] = m.baseRouteDistanceKm;
     x["sharedRouteDistanceKm"] = m.sharedRouteDistanceKm;
+    x["detourDistanceKm"] = m.detourDistanceKm;
     x["detourMinutes"] = m.detourMinutes; x["pickupArrivalTime"] = formatTime(m.pickupArrivalMinutes);
     x["passengerWaitMinutes"] = m.passengerWaitMinutes;
+    x["driverWaitMinutes"] = m.driverWaitMinutes;
+    x["passengerWaitByArrivalMinutes"] = m.passengerWaitByArrivalMinutes;
+    x["passengerEarliestPickupTime"] = formatTime(m.passengerEarliestPickupMinutes);
     x["passengerLatestPickupTime"] = formatTime(m.passengerLatestPickupMinutes);
-    wvalue route;
+    x["pickupArrivalWithinWindow"] = m.pickupArrivalWithinWindow;
+    x["pickupRouteIndex"] = m.pickupRouteIndex;
+    x["passengerDestinationRouteIndex"] = m.passengerDestinationRouteIndex;
+    wvalue route, originalRoute;
     for (size_t i = 0; i < m.route.size(); ++i) route[i] = m.route[i];
+    for (size_t i = 0; i < m.originalRoute.size(); ++i) originalRoute[i] = m.originalRoute[i];
     x["route"] = move(route);
+    x["originalRoute"] = move(originalRoute);
     return x;
 }
 static wvalue bookingJson(const Booking& b, const CarpoolService& service) {

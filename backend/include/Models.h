@@ -30,14 +30,22 @@ struct Match {
     int driverId{};
     int passengerId{};
     vector<string> route;
+    vector<string> originalRoute;
+    int pickupRouteIndex{-1};
+    int passengerDestinationRouteIndex{-1};
     double baseRouteDistanceKm{};
     double sharedRouteDistanceKm{};
+    double detourDistanceKm{};
     int baseRouteMinutes{};
     int sharedRouteMinutes{};
     int detourMinutes{};
     int pickupArrivalMinutes{};
     int passengerWaitMinutes{};
+    int driverWaitMinutes{};
+    int passengerWaitByArrivalMinutes{};
+    int passengerEarliestPickupMinutes{};
     int passengerLatestPickupMinutes{};
+    bool pickupArrivalWithinWindow{};
 };
 
 struct Booking {
