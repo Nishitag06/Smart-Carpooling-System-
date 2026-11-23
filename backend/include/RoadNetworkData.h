@@ -1,0 +1,100 @@
+#pragma once
+#include <cstddef>
+
+struct RoutedRoadDistance {
+    const char* from;
+    const char* to;
+    double distanceKm;
+    unsigned alternativeIndex;
+};
+
+inline constexpr const char* ROAD_DISTANCE_SOURCE =
+    "OSRM Route API using Photon/OpenStreetMap geocoding, queried 2026-11-23";
+
+inline constexpr RoutedRoadDistance ROAD_DISTANCE_DATA[] = {
+    {"JIIT Sector 128, Noida", "Botanical Garden Metro Station, Noida", 9.2776, 0},
+    {"JIIT Sector 128, Noida", "Noida Sector 61, Noida", 11.2615, 0},
+    {"JIIT Sector 128, Noida", "Noida Sector 59, Noida", 15.8817, 0},
+    {"JIIT Sector 128, Noida", "Noida Sector 62, Noida", 17.7545, 0},
+    {"JIIT Sector 128, Noida", "Noida Electronic City Metro Station, Noida", 18.5267, 0},
+    {"JIIT Sector 128, Noida", "Noida Electronic City Metro Station, Noida", 20.8876, 1},
+    {"JIIT Sector 128, Noida", "JIIT Sector 62, Noida", 18.6510, 0},
+    {"JIIT Sector 128, Noida", "JIIT Sector 62, Noida", 23.5769, 1},
+    {"JIIT Sector 128, Noida", "Indirapuram Habitat Centre, Ghaziabad", 21.8229, 0},
+    {"JIIT Sector 128, Noida", "Indirapuram Habitat Centre, Ghaziabad", 23.3915, 1},
+    {"Botanical Garden Metro Station, Noida", "JIIT Sector 128, Noida", 11.3679, 0},
+    {"Botanical Garden Metro Station, Noida", "Noida Sector 61, Noida", 7.0284, 0},
+    {"Botanical Garden Metro Station, Noida", "Noida Sector 61, Noida", 8.5075, 1},
+    {"Botanical Garden Metro Station, Noida", "Noida Sector 59, Noida", 7.8775, 0},
+    {"Botanical Garden Metro Station, Noida", "Noida Sector 62, Noida", 9.7503, 0},
+    {"Botanical Garden Metro Station, Noida", "Noida Electronic City Metro Station, Noida", 10.5225, 0},
+    {"Botanical Garden Metro Station, Noida", "JIIT Sector 62, Noida", 10.6468, 0},
+    {"Botanical Garden Metro Station, Noida", "JIIT Sector 62, Noida", 14.5047, 1},
+    {"Botanical Garden Metro Station, Noida", "Indirapuram Habitat Centre, Ghaziabad", 13.8186, 0},
+    {"Botanical Garden Metro Station, Noida", "Indirapuram Habitat Centre, Ghaziabad", 14.4919, 1},
+    {"Noida Sector 61, Noida", "JIIT Sector 128, Noida", 16.5604, 0},
+    {"Noida Sector 61, Noida", "Botanical Garden Metro Station, Noida", 7.9901, 0},
+    {"Noida Sector 61, Noida", "Botanical Garden Metro Station, Noida", 7.9580, 1},
+    {"Noida Sector 61, Noida", "Noida Sector 59, Noida", 0.9934, 0},
+    {"Noida Sector 61, Noida", "Noida Sector 62, Noida", 2.8662, 0},
+    {"Noida Sector 61, Noida", "Noida Electronic City Metro Station, Noida", 3.6384, 0},
+    {"Noida Sector 61, Noida", "JIIT Sector 62, Noida", 3.7627, 0},
+    {"Noida Sector 61, Noida", "JIIT Sector 62, Noida", 6.3896, 1},
+    {"Noida Sector 61, Noida", "Indirapuram Habitat Centre, Ghaziabad", 6.9345, 0},
+    {"Noida Sector 59, Noida", "JIIT Sector 128, Noida", 17.5578, 0},
+    {"Noida Sector 59, Noida", "Botanical Garden Metro Station, Noida", 8.9875, 0},
+    {"Noida Sector 59, Noida", "Noida Sector 61, Noida", 1.6746, 0},
+    {"Noida Sector 59, Noida", "Noida Sector 62, Noida", 1.8728, 0},
+    {"Noida Sector 59, Noida", "Noida Electronic City Metro Station, Noida", 2.6450, 0},
+    {"Noida Sector 59, Noida", "JIIT Sector 62, Noida", 2.7693, 0},
+    {"Noida Sector 59, Noida", "JIIT Sector 62, Noida", 5.3962, 1},
+    {"Noida Sector 59, Noida", "Indirapuram Habitat Centre, Ghaziabad", 5.9411, 0},
+    {"Noida Sector 62, Noida", "JIIT Sector 128, Noida", 18.4139, 0},
+    {"Noida Sector 62, Noida", "Botanical Garden Metro Station, Noida", 9.8436, 0},
+    {"Noida Sector 62, Noida", "Botanical Garden Metro Station, Noida", 9.5752, 1},
+    {"Noida Sector 62, Noida", "Noida Sector 61, Noida", 2.5307, 0},
+    {"Noida Sector 62, Noida", "Noida Sector 59, Noida", 2.3825, 0},
+    {"Noida Sector 62, Noida", "Noida Electronic City Metro Station, Noida", 2.4680, 0},
+    {"Noida Sector 62, Noida", "Noida Electronic City Metro Station, Noida", 2.9075, 1},
+    {"Noida Sector 62, Noida", "JIIT Sector 62, Noida", 2.5923, 0},
+    {"Noida Sector 62, Noida", "JIIT Sector 62, Noida", 5.2193, 1},
+    {"Noida Sector 62, Noida", "Indirapuram Habitat Centre, Ghaziabad", 5.7641, 0},
+    {"Noida Sector 62, Noida", "Indirapuram Habitat Centre, Ghaziabad", 5.6391, 1},
+    {"Noida Electronic City Metro Station, Noida", "JIIT Sector 128, Noida", 19.7113, 0},
+    {"Noida Electronic City Metro Station, Noida", "Botanical Garden Metro Station, Noida", 11.1410, 0},
+    {"Noida Electronic City Metro Station, Noida", "Botanical Garden Metro Station, Noida", 10.8726, 1},
+    {"Noida Electronic City Metro Station, Noida", "Noida Sector 61, Noida", 3.8281, 0},
+    {"Noida Electronic City Metro Station, Noida", "Noida Sector 59, Noida", 3.6798, 0},
+    {"Noida Electronic City Metro Station, Noida", "Noida Sector 62, Noida", 1.2974, 0},
+    {"Noida Electronic City Metro Station, Noida", "JIIT Sector 62, Noida", 1.2620, 0},
+    {"Noida Electronic City Metro Station, Noida", "JIIT Sector 62, Noida", 3.8889, 1},
+    {"Noida Electronic City Metro Station, Noida", "Indirapuram Habitat Centre, Ghaziabad", 4.4338, 0},
+    {"Noida Electronic City Metro Station, Noida", "Indirapuram Habitat Centre, Ghaziabad", 4.3088, 1},
+    {"JIIT Sector 62, Noida", "JIIT Sector 128, Noida", 20.3879, 0},
+    {"JIIT Sector 62, Noida", "JIIT Sector 128, Noida", 23.3017, 1},
+    {"JIIT Sector 62, Noida", "Botanical Garden Metro Station, Noida", 11.8176, 0},
+    {"JIIT Sector 62, Noida", "Botanical Garden Metro Station, Noida", 14.7314, 1},
+    {"JIIT Sector 62, Noida", "Noida Sector 61, Noida", 4.5047, 0},
+    {"JIIT Sector 62, Noida", "Noida Sector 59, Noida", 4.3565, 0},
+    {"JIIT Sector 62, Noida", "Noida Sector 59, Noida", 6.1686, 1},
+    {"JIIT Sector 62, Noida", "Noida Sector 62, Noida", 1.9740, 0},
+    {"JIIT Sector 62, Noida", "Noida Sector 62, Noida", 4.8878, 1},
+    {"JIIT Sector 62, Noida", "Noida Electronic City Metro Station, Noida", 0.7956, 0},
+    {"JIIT Sector 62, Noida", "Noida Electronic City Metro Station, Noida", 3.7094, 1},
+    {"JIIT Sector 62, Noida", "Indirapuram Habitat Centre, Ghaziabad", 3.5272, 0},
+    {"JIIT Sector 62, Noida", "Indirapuram Habitat Centre, Ghaziabad", 3.8619, 1},
+    {"Indirapuram Habitat Centre, Ghaziabad", "JIIT Sector 128, Noida", 22.1997, 0},
+    {"Indirapuram Habitat Centre, Ghaziabad", "JIIT Sector 128, Noida", 22.2488, 1},
+    {"Indirapuram Habitat Centre, Ghaziabad", "Botanical Garden Metro Station, Noida", 13.6294, 0},
+    {"Indirapuram Habitat Centre, Ghaziabad", "Botanical Garden Metro Station, Noida", 13.3610, 1},
+    {"Indirapuram Habitat Centre, Ghaziabad", "Noida Sector 61, Noida", 6.3164, 0},
+    {"Indirapuram Habitat Centre, Ghaziabad", "Noida Sector 59, Noida", 6.1682, 0},
+    {"Indirapuram Habitat Centre, Ghaziabad", "Noida Sector 59, Noida", 7.5847, 1},
+    {"Indirapuram Habitat Centre, Ghaziabad", "Noida Sector 62, Noida", 3.7857, 0},
+    {"Indirapuram Habitat Centre, Ghaziabad", "Noida Electronic City Metro Station, Noida", 2.6074, 0},
+    {"Indirapuram Habitat Centre, Ghaziabad", "JIIT Sector 62, Noida", 2.2235, 0},
+    {"Indirapuram Habitat Centre, Ghaziabad", "JIIT Sector 62, Noida", 4.7428, 1}
+};
+
+inline constexpr std::size_t ROAD_DISTANCE_DATA_COUNT =
+    sizeof(ROAD_DISTANCE_DATA) / sizeof(ROAD_DISTANCE_DATA[0]);

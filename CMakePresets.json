@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "configurePresets": [
+    {
+      "name": "ucrt64",
+      "displayName": "MSYS2 UCRT64",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build-ucrt64",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_CXX_COMPILER": {
+          "type": "FILEPATH",
+          "value": "C:/msys64/ucrt64/bin/g++.exe"
+        },
+        "CMAKE_MAKE_PROGRAM": {
+          "type": "FILEPATH",
+          "value": "C:/msys64/ucrt64/bin/ninja.exe"
+        },
+        "ASIO_INCLUDE_DIR": {
+          "type": "PATH",
+          "value": "${sourceDir}/third_party/asio/asio/include"
+        },
+        "BUILD_TESTING": "ON"
+      },
+      "environment": {
+        "PATH": "C:/msys64/ucrt64/bin;$penv{PATH}"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "ucrt64-release",
+      "configurePreset": "ucrt64",
+      "configuration": "Release"
+    }
+  ]
+}

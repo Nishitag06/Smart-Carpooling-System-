@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120" role="img" aria-label="A green shared car travelling beside trees">
+  <g fill="none" stroke="#bfe3a9" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6 104h228" stroke-width="3" opacity=".55"/>
+    <path d="M27 100V50M16 66l11-20 11 20M11 84l16-25 16 25" stroke-width="4"/>
+    <path d="M202 100V42M190 60l12-22 12 22M185 80l17-25 17 25" stroke-width="4"/>
+  </g>
+  <path d="M67 90V73c0-7 6-13 13-13h14l15-17h36c8 0 13 4 17 12l7 13h8c8 0 13 5 13 12v10z" fill="#eaf7df"/>
+  <path d="M102 61l10-12h27c5 0 8 3 10 12z" fill="#7ab88a"/>
+  <circle cx="94" cy="91" r="10" fill="#174936" stroke="#d8f0cb" stroke-width="4"/>
+  <circle cx="164" cy="91" r="10" fill="#174936" stroke="#d8f0cb" stroke-width="4"/>
+</svg>

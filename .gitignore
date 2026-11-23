@@ -1,0 +1,40 @@
+build/
+frontend/node_modules/
+frontend/dist/
+*.exe
+.vscode/
+# CMake build folders
+build/
+build-mingw/
+build-ucrt/
+build-ucrt64/
+build-ucrt-samples/
+
+# Compiled C++ files
+*.exe
+*.o
+*.obj
+*.a
+*.lib
+
+# React / Node
+node_modules/
+frontend/node_modules/
+frontend/dist/
+
+# Environment files and secrets
+.env
+.env.*
+!.env.example
+
+# IDE files
+.vscode/
+.idea/
+
+# Temporary files
+*.log
+Thumbs.db
+Desktop.ini
+
+# Third-party dependencies
+third_party/
